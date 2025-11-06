@@ -29,15 +29,9 @@ class MarsRoverPage extends StatelessWidget {
               );
             }
 
-            // Show snackbar for success
+            // Show success dialog
             if (state is RoverSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: Colors.green,
-                  duration: const Duration(seconds: 3),
-                ),
-              );
+              _showSuccessDialog(context, state.message);
             }
           },
           builder: (context, state) {
@@ -259,6 +253,56 @@ class MarsRoverPage extends StatelessWidget {
       onStart: onPressed,
       isEnabled: isEnabled,
       buttonText: buttonText,
+    );
+  }
+
+  void _showSuccessDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Row(
+            children: [
+              Icon(Icons.check_circle, color: Colors.green, size: 32),
+              SizedBox(width: 12),
+              Text('Mission Successful!'),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.rocket_launch,
+                size: 80,
+                color: Colors.green,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                message,
+                style: const TextStyle(fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+          actions: [
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                context.read<RoverCubit>().reset();
+              },
+              icon: const Icon(Icons.refresh),
+              label: const Text('Start New Mission'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              ),
+            ),
+          ],
+          actionsAlignment: MainAxisAlignment.center,
+        );
+      },
     );
   }
 }
