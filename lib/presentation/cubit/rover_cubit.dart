@@ -73,7 +73,7 @@ class RoverCubit extends Cubit<RoverState> {
     );
 
     // Emit loading state with grid initialized
-    emit(const RoverLoading());
+    emit(RoverLoading(grid: _currentGrid));
   }
 
   /// Handles Move command - moves the rover

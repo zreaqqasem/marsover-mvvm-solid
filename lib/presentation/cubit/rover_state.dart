@@ -16,7 +16,12 @@ class RoverInitial extends RoverState {
 
 /// Loading state - processing commands
 class RoverLoading extends RoverState {
-  const RoverLoading();
+  final Grid? grid;
+
+  const RoverLoading({this.grid});
+
+  @override
+  List<Object?> get props => [grid];
 }
 
 /// State when rover is actively moving on the grid
